@@ -10,6 +10,7 @@
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
     "@google-ai/generativelanguage": "^0.2.0",
+    "@huggingface/inference": "^2.6.1",
     "@mantine/core": "^6.0.9",
     "@mantine/dates": "^6.0.13",
     "@mantine/form": "^6.0.11",
