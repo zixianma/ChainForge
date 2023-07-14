@@ -27,7 +27,7 @@ const ImageNode = ({ data, id }) => {
       }
     };
 
-  const handleImageOutputChange = async (event) => {
+  const saveOutput = async (event) => {
     const url = document.getElementById(id + "imageout").src;
     console.error(url);
     const imageBlob = await fetch(url).then(r => r.blob());
@@ -73,7 +73,7 @@ const ImageNode = ({ data, id }) => {
         :
         <div>Output: <br/>
         <img id={id + "imageout"} style={{width: '290px'}}></img>
-        <button onClick={handleImageOutputChange}>Save output image in node data</button>
+        <button onClick={saveOutput}>Save output to node data</button>
         </div>
         }
         </div>

@@ -92,6 +92,14 @@ const TextFieldsNode = ({ data, id }) => {
     setDataPropsForNode(id, { fields_visibility: vis });
   }, [fieldVisibility, setDataPropsForNode]);
 
+  const saveOutput = () => {
+    const output = document.getElementById(id + "textout").value;
+    console.error(output);
+    handleTextFieldChange('f1', output);
+    console.error('saved to data!');
+    console.error(data.fields);
+  }
+
   // Save the state of a textfield when it changes and update hooks
   const handleTextFieldChange = useCallback((field_id, val) => {
 
@@ -99,7 +107,8 @@ const TextFieldsNode = ({ data, id }) => {
     let new_fields = {...textfieldsValues};
     new_fields[field_id] = val;
     setTextfieldsValues(new_fields);
-
+    // console.error('new text fields:');
+    // console.error(textfieldsValues);
     // Update the data for the ReactFlow node
     let new_data = { 'fields': new_fields };
 
@@ -186,10 +195,20 @@ const TextFieldsNode = ({ data, id }) => {
       </div>
       : 
       <div ref={setRef}>
-      Output(s):
-      <ol>
+      Output: <br />
+      <textarea
+          id={id +"textout"}
+          rows="4"
+          cols="40"
+          // onChange={(event) => handleTextFieldChange(0, event.currentTarget.value)}
+          on
+          className="nodrag nowheel"
+        />
+      <br />
+      <button onClick={saveOutput}>Save output to node data</button>
+      {/* <ol>
       <li id={id +"textout"}></li>
-      </ol>
+      </ol> */}
       <Handle
         type="target"
         position="left"
@@ -198,14 +217,14 @@ const TextFieldsNode = ({ data, id }) => {
       />
     </div>
     }
-    {IS_INPUT?
-    <div>
-      <Handle
+    <Handle
         type="source"
         position="right"
         id="output"
         style={{ top: "50%", background: '#555' }}
       />
+    {IS_INPUT?
+    <div>
       <TemplateHooks vars={templateVars} nodeId={id} startY={hooksY} />
       <div className="add-text-field-btn">
         <button onClick={handleAddField}>+</button>
