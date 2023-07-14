@@ -63,7 +63,7 @@ const TextFieldsNode = ({ data, id }) => {
     }
     setTextfieldsValues(new_fields);
     setFieldVisibility(new_vis);
-    setDataPropsForNode(id, {fields: new_fields, fields_visibility: new_vis});
+    setDataPropsForNode(id, { fields: new_fields, fields_visibility: new_vis });
   }, [textfieldsValues, fieldVisibility, id, delButtonId, setDataPropsForNode]);
 
   // Initialize fields (run once at init)
@@ -78,7 +78,7 @@ const TextFieldsNode = ({ data, id }) => {
 
   // Add a text field
   const handleAddField = useCallback(() => {
-    let new_fields = {...textfieldsValues};
+    let new_fields = { ...textfieldsValues };
     new_fields[getUID()] = "";
     setTextfieldsValues(new_fields);
     setDataPropsForNode(id, { fields: new_fields });
@@ -86,7 +86,7 @@ const TextFieldsNode = ({ data, id }) => {
 
   // Disable/hide a text field temporarily
   const handleDisableField = useCallback((field_id) => {
-    let vis = {...fieldVisibility};
+    let vis = { ...fieldVisibility };
     vis[field_id] = fieldVisibility[field_id] === false; // toggles it
     setFieldVisibility(vis);
     setDataPropsForNode(id, { fields_visibility: vis });
@@ -104,7 +104,7 @@ const TextFieldsNode = ({ data, id }) => {
   const handleTextFieldChange = useCallback((field_id, val) => {
 
     // Update the value of the controlled Textarea component
-    let new_fields = {...textfieldsValues};
+    let new_fields = { ...textfieldsValues };
     new_fields[field_id] = val;
     setTextfieldsValues(new_fields);
     // console.error('new text fields:');
@@ -165,76 +165,76 @@ const TextFieldsNode = ({ data, id }) => {
 
   return (
     <div className="text-fields-node cfnode">
-      <NodeLabel title={data.title || IS_INPUT? 'TextFields Node (In)': 'TextFields Node (Out)'} nodeId={id} icon={<IconTextPlus size="16px" />} />
-      {IS_INPUT? 
-      <div ref={setRef}>
-        {Object.keys(textfieldsValues).map(i => (
-          <div className="input-field" key={i}>
-            <Textarea id={i} name={i} 
-                      className="text-field-fixed nodrag nowheel" 
-                      minRows="2"
-                      value={textfieldsValues[i]}  
-                      disabled={fieldVisibility[i] === false}
-                      onChange={(event) => handleTextFieldChange(i, event.currentTarget.value)} />
-            {Object.keys(textfieldsValues).length > 1 ? (
-              <div style={{display: 'flex', flexDirection: 'column'}}>
-                <Tooltip label='remove field' position='right' withArrow arrowSize={10} withinPortal>
-                  <button id={delButtonId + i} className="remove-text-field-btn nodrag" onClick={handleDelete} style={{flex: 1}}>X</button>
-                </Tooltip>
-                <Tooltip label={(fieldVisibility[i] === false ? 'enable' : 'disable') + ' field'} position='right' withArrow arrowSize={10} withinPortal>
-                  <button id={visibleButtonId + i} className="remove-text-field-btn nodrag" onClick={() => handleDisableField(i)} style={{flex: 1}}>
-                    {fieldVisibility[i] === false ? 
+      <NodeLabel title={data.title || IS_INPUT ? 'TextFields Node (In)' : 'TextFields Node (Out)'} nodeId={id} icon={<IconTextPlus size="16px" />} />
+      {IS_INPUT ?
+        <div ref={setRef}>
+          {Object.keys(textfieldsValues).map(i => (
+            <div className="input-field" key={i}>
+              <Textarea id={i} name={i}
+                className="text-field-fixed nodrag nowheel"
+                minRows="2"
+                value={textfieldsValues[i]}
+                disabled={fieldVisibility[i] === false}
+                onChange={(event) => handleTextFieldChange(i, event.currentTarget.value)} />
+              {Object.keys(textfieldsValues).length > 1 ? (
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <Tooltip label='remove field' position='right' withArrow arrowSize={10} withinPortal>
+                    <button id={delButtonId + i} className="remove-text-field-btn nodrag" onClick={handleDelete} style={{ flex: 1 }}>X</button>
+                  </Tooltip>
+                  <Tooltip label={(fieldVisibility[i] === false ? 'enable' : 'disable') + ' field'} position='right' withArrow arrowSize={10} withinPortal>
+                    <button id={visibleButtonId + i} className="remove-text-field-btn nodrag" onClick={() => handleDisableField(i)} style={{ flex: 1 }}>
+                      {fieldVisibility[i] === false ?
                         <IconEyeOff size='14pt' pointerEvents='none' />
-                      : <IconEye size='14pt' pointerEvents='none' />
-                    }
-                  </button>
-                </Tooltip>
-              </div>
-            ) : <></>}
-          </div>))}
-      </div>
-      : 
-      <div ref={setRef}>
-      Output: <br />
-      <textarea
-          id={id +"textout"}
-          rows="4"
-          cols="40"
-          // onChange={(event) => handleTextFieldChange(0, event.currentTarget.value)}
-          on
-          className="nodrag nowheel"
-        />
-      <br />
-      <button onClick={saveOutput}>Save output to node data</button>
-      {/* <ol>
+                        : <IconEye size='14pt' pointerEvents='none' />
+                      }
+                    </button>
+                  </Tooltip>
+                </div>
+              ) : <></>}
+            </div>))}
+        </div>
+        :
+        <div ref={setRef}>
+          Output: <br />
+          <textarea
+            id={id + "textout"}
+            rows="4"
+            cols="40"
+            // onChange={(event) => handleTextFieldChange(0, event.currentTarget.value)}
+            on
+            className="nodrag nowheel"
+          />
+          <br />
+          <button onClick={saveOutput}>Save output to node data</button>
+          {/* <ol>
       <li id={id +"textout"}></li>
       </ol> */}
+          <Handle
+            type="target"
+            position="left"
+            id="input"
+            style={{ top: "50%", background: '#555' }}
+          />
+        </div>
+      }
       <Handle
-        type="target"
-        position="left"
-        id="input"
-        style={{ top: "50%", background: '#555' }}
-      />
-    </div>
-    }
-    <Handle
         type="source"
         position="right"
         id="output"
         style={{ top: "50%", background: '#555' }}
       />
-    {IS_INPUT?
-    <div>
-      <TemplateHooks vars={templateVars} nodeId={id} startY={hooksY} />
-      <div className="add-text-field-btn">
-        <button onClick={handleAddField}>+</button>
-      </div>
-      </div>
-    :
-    <div></div>
-    }    
+      {IS_INPUT ?
+        <div>
+          <TemplateHooks vars={templateVars} nodeId={id} startY={hooksY} />
+          <div className="add-text-field-btn">
+            <button onClick={handleAddField}>+</button>
+          </div>
+        </div>
+        :
+        <div></div>
+      }
     </div>
-    
+
   );
 };
 
