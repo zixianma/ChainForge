@@ -33,6 +33,8 @@ const TextFieldsNode = ({ data, id }) => {
 
   const [templateVars, setTemplateVars] = useState(data.vars || []);
   const setDataPropsForNode = useStore((state) => state.setDataPropsForNode);
+  const delButtonId = 'del-';
+  const IS_INPUT = data.iotype === 'input';
 
   const [textfieldsValues, setTextfieldsValues] = useState(data.fields || {});
   const [fieldVisibility, setFieldVisibility] = useState(data.fields_visibility || {});
@@ -154,7 +156,8 @@ const TextFieldsNode = ({ data, id }) => {
 
   return (
     <div className="text-fields-node cfnode">
-      <NodeLabel title={data.title || 'TextFields Node'} nodeId={id} icon={<IconTextPlus size="16px" />} />
+      <NodeLabel title={data.title || IS_INPUT? 'TextFields Node (In)': 'TextFields Node (Out)'} nodeId={id} icon={<IconTextPlus size="16px" />} />
+      {IS_INPUT? 
       <div ref={setRef}>
         {Object.keys(textfieldsValues).map(i => (
           <div className="input-field" key={i}>
@@ -181,6 +184,22 @@ const TextFieldsNode = ({ data, id }) => {
             ) : <></>}
           </div>))}
       </div>
+      : 
+      <div ref={setRef}>
+      Output(s):
+      <ol>
+      <li id={id +"textout"}></li>
+      </ol>
+      <Handle
+        type="target"
+        position="left"
+        id="input"
+        style={{ top: "50%", background: '#555' }}
+      />
+    </div>
+    }
+    {IS_INPUT?
+    <div>
       <Handle
         type="source"
         position="right"
@@ -191,7 +210,12 @@ const TextFieldsNode = ({ data, id }) => {
       <div className="add-text-field-btn">
         <button onClick={handleAddField}>+</button>
       </div>
+      </div>
+    :
+    <div></div>
+    }    
     </div>
+    
   );
 };
 
