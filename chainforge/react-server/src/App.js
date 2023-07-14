@@ -8,9 +8,13 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import { Button, Menu, LoadingOverlay, Text, Box, List, Loader } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
-import { IconSettings, IconTextPlus, IconTerminal, IconCsv, IconSettingsAutomation, IconFileSymlink } from '@tabler/icons-react';
+import { IconSettings, IconTextPlus, IconTerminal, IconCsv, IconSettingsAutomation, IconFileSymlink, IconTools, IconPhoto } from '@tabler/icons-react';
 import TextFieldsNode from './TextFieldsNode'; // Import a custom node
 import PromptNode from './PromptNode';
+// import ModelToolNode from './ModelToolNode'
+// import CodeToolNode from './CodeToolNode'
+import ImageNode from './ImageNode';
+import ToolNode from './ToolNode';
 import EvaluatorNode from './EvaluatorNode';
 import VisNode from './VisNode';
 import InspectNode from './InspectorNode';
@@ -72,7 +76,12 @@ const INITIAL_LLM = () => {
 
 const nodeTypes = {
   textfields: TextFieldsNode, // Register the custom node
+  text: TextFieldsNode,
+  image: ImageNode,
   prompt: PromptNode,
+  tool:ToolNode,
+  // modeltool: ModelToolNode,
+  // codetool: CodeToolNode,
   evaluator: EvaluatorNode,
   vis: VisNode,
   inspect: InspectNode,
@@ -157,14 +166,35 @@ const App = () => {
     return ({x: -x+centerX, y:-y+centerY});
   }
 
-  const addTextFieldsNode = (event) => {
+  const addTextFieldsNode = (ioType) => {
     const { x, y } = getViewportCenter();
-    addNode({ id: 'textFieldsNode-'+Date.now(), type: 'textfields', data: {}, position: {x: x-200, y:y-100} });
+    addNode({ id: 'textFieldsNode-'+Date.now(), type: 'text', data: {iotype: ioType}, position: {x: x-200, y:y-100} });
   };
   const addPromptNode = (event) => {
     const { x, y } = getViewportCenter();
     addNode({ id: 'promptNode-'+Date.now(), type: 'prompt', data: { prompt: '' }, position: {x: x-200, y:y-100} });
   };
+  const addImageNode = (ioType) => {
+    const { x, y } = getViewportCenter();
+    addNode({ id: 'imageNode-'+Date.now(), type: 'image', data: { iotype: ioType}, position: {x: x-200, y:y-100} });
+  };
+  const addToolNode = (event) => {
+    const { x, y } = getViewportCenter();
+    addNode({ id: 'toolNode-'+Date.now(), type: 'tool', data: {}, position: {x: x-200, y:y-100} });
+  };
+  // const addModelToolNode = (event) => {
+  //   const { x, y } = getViewportCenter();
+  //   addNode({ id: 'modelToolNode-'+Date.now(), type: 'modeltool', data: {}, position: {x: x-200, y:y-100} });
+  // };
+  // const addCodeToolNode = (progLang) => {
+  //   const { x, y } = getViewportCenter();
+  //   let code = "";
+  //   if (progLang === 'python') 
+  //     code = "def evaluate(response):\n  return len(response.text)";
+  //   else if (progLang === 'javascript')
+  //     code = "function evaluate(response) {\n  return response.text.length;\n}";
+  //   addNode({ id: 'codeToolNode-'+Date.now(), type: 'codetool', data: { language: progLang, code: code }, position: {x: x-200, y:y-100} });
+  // };
   const addEvalNode = (progLang) => {
     const { x, y } = getViewportCenter();
     let code = "";
@@ -693,8 +723,14 @@ const App = () => {
               <Button size="sm" variant="gradient" compact mr='sm'>Add Node +</Button>
           </Menu.Target>
           <Menu.Dropdown>
-              <Menu.Item onClick={addTextFieldsNode} icon={<IconTextPlus size="16px" />}> TextFields </Menu.Item>
+              <Menu.Item onClick={() => addTextFieldsNode('input')} icon={<IconTextPlus size="16px" />}> TextFields (In) </Menu.Item>
+              <Menu.Item onClick={() => addTextFieldsNode('output')} icon={<IconTextPlus size="16px" />}> TextFields (Out)</Menu.Item>
+              <Menu.Item onClick={() => addImageNode('input')} icon={<IconPhoto size="16px" />}> Image (In) </Menu.Item>
+              <Menu.Item onClick={() => addImageNode('output')} icon={<IconPhoto size="16px" />}> Image (Out) </Menu.Item>
               <Menu.Item onClick={addPromptNode} icon={'💬'}> Prompt Node </Menu.Item>
+              <Menu.Item onClick={addToolNode} icon={<IconTools size="16px" />}> Tool Node</Menu.Item>
+              {/* <Menu.Item onClick={addModelToolNode} icon={<IconTools size="16px" />}> Tool Node (Model) </Menu.Item>
+              <Menu.Item onClick={() => addCodeToolNode('python')} icon={<IconTools size="16px" />}> Tool Node (Code) </Menu.Item> */}
               <Menu.Item onClick={() => addEvalNode('javascript')} icon={<IconTerminal size="16px" />}> JavaScript Evaluator Node </Menu.Item>
               {IS_RUNNING_LOCALLY ? (
                 <Menu.Item onClick={() => addEvalNode('python')} icon={<IconTerminal size="16px" />}> Python Evaluator Node </Menu.Item>
