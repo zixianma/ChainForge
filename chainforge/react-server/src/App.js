@@ -8,7 +8,7 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import { Button, Menu, LoadingOverlay, Text, Box, List, Loader, Drawer, Space, Flex} from '@mantine/core';
 import { useClipboard, useDisclosure } from '@mantine/hooks';
-import { IconSettings, IconTextPlus, IconTerminal, IconCsv, IconSettingsAutomation, IconFileSymlink, IconTools, IconPhoto, IconLanguage, IconWriting, IconRegex, IconLogin, IconBrush, IconPictureInPictureOn, IconTextCaption, IconBrandPython, IconBrandJavascript, IconCalculator, IconWorldWww, IconBrandGoogleMaps} from '@tabler/icons-react';
+import { IconSettings, IconTextPlus, IconTerminal, IconCsv, IconSettingsAutomation, IconFileSymlink, IconTools, IconPhoto, IconLanguage, IconWriting, IconRegex, IconLogin, IconBrush, IconPictureInPictureOn, IconTextCaption, IconBrandPython, IconBrandJavascript, IconCalculator, IconWorldWww, IconBrandGoogleMaps, IconSearch, IconChartBar, IconColumns, IconMessage2} from '@tabler/icons-react';
 import TextFieldsNode from './TextFieldsNode'; // Import a custom node
 import PromptNode from './PromptNode';
 // import ModelToolNode from './ModelToolNode'
@@ -706,17 +706,13 @@ const App = () => {
       >
         <Button onClick={() => addTextFieldsNode('input')} icon={<IconTextPlus size="16px" />} variant="light" compact><IconTextPlus size="16px" /><Space w="xs" />Text Input</Button>
         <Button onClick={() => addTextFieldsNode('output')} icon={<IconTextPlus size="16px" />} variant="light" compact><IconTextPlus size="16px" /><Space w="xs" />Text Output</Button>
-      </Flex>
-      <Flex
-        mih={35}
-        gap="xs"
-        justify="flex-start"
-        align="center"
-        direction="row"
-        wrap="wrap"
-      >
         <Button onClick={() => addImageNode('input')} icon={<IconTextPlus size="16px" />} variant="light" compact><IconPhoto size="16px" /><Space w="xs" />Image Input</Button>
-        <Button onClick={() => addImageNode('output')} icon={<IconTextPlus size="16px" />} variant="light" compact><IconPhoto size="16px" /><Space w="xs" />Image Output</Button>
+        <Button onClick={() => addImageNode('output')} variant="light" compact><IconPhoto size="16px" /><Space w="xs" />Image Output</Button>
+        <Button onClick={addVisNode} variant="light" compact><IconChartBar size="16px" /><Space w="xs" />Visualize Output</Button>
+        <Button onClick={addTabularDataNode} variant="light" compact><IconColumns size="16px" /><Space w="xs" />Tabular Input</Button>
+        <Button onClick={addCommentNode} variant="light" compact><IconMessage2 size="16px" /><Space w="xs" />Comment</Button>
+        <Button onClick={addInspectNode} variant="light" compact><IconSearch size="16px" /><Space w="xs" />Inspect Node</Button>
+
       </Flex>
 
       <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Models</Text>
