@@ -6,15 +6,19 @@ import ReactFlow, {
   Controls,
   Background,
 } from 'react-flow-renderer';
-import { Button, Menu, LoadingOverlay, Text, Box, List, Loader } from '@mantine/core';
-import { useClipboard } from '@mantine/hooks';
-import { IconSettings, IconTextPlus, IconTerminal, IconCsv, IconSettingsAutomation, IconFileSymlink, IconTools, IconPhoto } from '@tabler/icons-react';
+import { Button, Menu, LoadingOverlay, Text, Box, List, Loader, Drawer, Space, Flex} from '@mantine/core';
+import { useClipboard, useDisclosure } from '@mantine/hooks';
+import { IconSettings, IconTextPlus, IconTerminal, IconCsv, IconSettingsAutomation, IconFileSymlink, IconTools, IconPhoto, IconLanguage, IconWriting, IconRegex, IconLogin, IconBrush, IconPictureInPictureOn, IconTextCaption, IconBrandPython, IconBrandJavascript, IconCalculator, IconWorldWww, IconBrandGoogleMaps, IconSearch, IconChartBar, IconColumns, IconMessage2} from '@tabler/icons-react';
 import TextFieldsNode from './TextFieldsNode'; // Import a custom node
 import PromptNode from './PromptNode';
 // import ModelToolNode from './ModelToolNode'
 // import CodeToolNode from './CodeToolNode'
 import ImageNode from './ImageNode';
+
 import ToolNode from './ToolNode';
+import TextTranslation from './tools/TextTranslation';
+import TextGeneration from './tools/TextGeneration';
+
 import EvaluatorNode from './EvaluatorNode';
 import VisNode from './VisNode';
 import InspectNode from './InspectorNode';
@@ -31,6 +35,9 @@ import { v4 as uuid } from 'uuid';
 import LZString from 'lz-string';
 import { EXAMPLEFLOW_1 } from './example_flows';
 import './text-fields-node.css';
+
+import bouquetlogo from './bouquet.png';
+import bouquetlogo1 from './bouquet_1.png';
 
 // State management (from https://reactflow.dev/docs/guides/state-management/)
 import { shallow } from 'zustand/shallow';
@@ -80,6 +87,8 @@ const nodeTypes = {
   image: ImageNode,
   prompt: PromptNode,
   tool: ToolNode,
+  texttranslation: TextTranslation,
+  textgeneration: TextGeneration,
   // modeltool: ModelToolNode,
   // codetool: CodeToolNode,
   evaluator: EvaluatorNode,
@@ -181,6 +190,16 @@ const App = () => {
   const addToolNode = (event) => {
     const { x, y } = getViewportCenter();
     addNode({ id: 'toolNode-' + Date.now(), type: 'tool', data: {}, position: { x: x - 200, y: y - 100 } });
+  };
+
+  const addTextTranslationNode = (event) => {
+    const { x, y } = getViewportCenter();
+    addNode({ id: 'textTranslationNode-' + Date.now(), type: 'texttranslation', data: {}, position: { x: x - 200, y: y - 100 } });
+  };
+
+  const addTextGenerationNode = (event) => {
+    const { x, y } = getViewportCenter();
+    addNode({ id: 'textGenerationNode-' + Date.now(), type: 'textgeneration', data: {}, position: { x: x - 200, y: y - 100 } });
   };
   // const addModelToolNode = (event) => {
   //   const { x, y } = getViewportCenter();
@@ -339,6 +358,10 @@ const App = () => {
       loadFlow(JSON.parse(saved_flow), rf_inst);
     }
   };
+
+  // const openDrawer = () => {
+
+  // };
 
   // Export / Import (from JSON)
   const exportFlow = useCallback(() => {
@@ -665,6 +688,107 @@ const App = () => {
     };
   }, []);
 
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const content = (
+    <Box>
+      <Text size={'16pt'} fw={700}><IconTools size="18px" /> Tool Store</Text>
+      <Text mt="sm" size={'9pt'}>Drag and drop the input and output nodes to the canvas to begin. The input and output nodes are the entry and exit points of your flow. You can connect them to other nodes to create a flow.</Text>
+      
+      <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Input / Output</Text>
+      <Flex
+        mih={35}
+        gap="xs"
+        justify="flex-start"
+        align="center"
+        direction="row"
+        wrap="wrap"
+      >
+        <Button onClick={() => addTextFieldsNode('input')} icon={<IconTextPlus size="16px" />} variant="light" compact><IconTextPlus size="16px" /><Space w="xs" />Text Input</Button>
+        <Button onClick={() => addTextFieldsNode('output')} icon={<IconTextPlus size="16px" />} variant="light" compact><IconTextPlus size="16px" /><Space w="xs" />Text Output</Button>
+        <Button onClick={() => addImageNode('input')} icon={<IconTextPlus size="16px" />} variant="light" compact><IconPhoto size="16px" /><Space w="xs" />Image Input</Button>
+        <Button onClick={() => addImageNode('output')} variant="light" compact><IconPhoto size="16px" /><Space w="xs" />Image Output</Button>
+        <Button onClick={addVisNode} variant="light" compact><IconChartBar size="16px" /><Space w="xs" />Visualize Output</Button>
+        <Button onClick={addTabularDataNode} variant="light" compact><IconColumns size="16px" /><Space w="xs" />Tabular Input</Button>
+        <Button onClick={addCommentNode} variant="light" compact><IconMessage2 size="16px" /><Space w="xs" />Comment</Button>
+        <Button onClick={addInspectNode} variant="light" compact><IconSearch size="16px" /><Space w="xs" />Inspect Node</Button>
+
+      </Flex>
+
+      <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Models</Text>
+      <Flex
+        mih={35}
+        gap="xs"
+        justify="flex-start"
+        align="center"
+        direction="row"
+        wrap="wrap"
+      >
+        <Button onClick={addTextTranslationNode} icon={<IconTextPlus size="16px" />} variant="light" compact><IconLanguage size="16px" /><Space w="xs" />Language Translation</Button>
+        <Button onClick={addTextGenerationNode} icon={<IconTextPlus size="16px" />} variant="light" compact><IconWriting size="16px" /><Space w="xs" />Text Generation</Button>
+        <Button onClick={addTextGenerationNode} icon={<IconTextPlus size="16px" />} variant="light" compact><IconBrush size="16px" /><Space w="xs" />Generate Image</Button>
+        <Button onClick={addTextGenerationNode} icon={<IconTextPlus size="16px" />} variant="light" compact><IconTextCaption size="16px" /><Space w="xs" />Caption Image</Button>
+        <Button onClick={addTextGenerationNode} icon={<IconTextPlus size="16px" />} variant="light" compact><IconPictureInPictureOn size="16px" /><Space w="xs" />Convert Image</Button>
+      </Flex>
+
+      <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Code Compilers</Text>
+      <Flex
+        mih={35}
+        gap="xs"
+        justify="flex-start"
+        align="center"
+        direction="row"
+        wrap="wrap"
+      >
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconBrandPython size="16px" /><Space w="xs" />Python</Button>
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconBrandJavascript size="16px" /><Space w="xs" />Javascript</Button>
+      </Flex>
+
+      <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Processors</Text>
+      <Flex
+        mih={35}
+        gap="xs"
+        justify="flex-start"
+        align="center"
+        direction="row"
+        wrap="wrap"
+      >
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconRegex size="16px" /><Space w="xs" />Regex</Button>
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconLogin size="16px" /><Space w="xs" />Mask</Button>
+      </Flex>
+
+      <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Tools</Text>
+      <Flex
+        mih={35}
+        gap="xs"
+        justify="flex-start"
+        align="center"
+        direction="row"
+        wrap="wrap"
+      >
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconCalculator size="16px" /><Space w="xs" />Calculator</Button>
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconWorldWww size="16px" /><Space w="xs" />Search</Button>
+
+      </Flex>
+
+      <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Specific APIs</Text>
+      <Flex
+        mih={35}
+        gap="xs"
+        justify="flex-start"
+        align="center"
+        direction="row"
+        wrap="wrap"
+      >
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconBrandGoogleMaps size="16px" /><Space w="xs" />Google Maps</Button>
+
+      </Flex>
+
+
+      
+    </Box>
+  );
+
   if (!IS_ACCEPTED_BROWSER) {
     return (
       <Box maw={600} mx='auto' mt='40px'>
@@ -717,39 +841,79 @@ const App = () => {
         </ReactFlow>
       </div>
       <div id="custom-controls" style={{ position: 'fixed', left: '10px', top: '10px', zIndex: 8 }}>
+      <Menu transitionProps={{ transition: 'pop-top-left' }}
+          position="top-start"
+          width={220}
+          closeOnClickOutside={true}
+        >
+          <Menu.Target>
+            <Button size="sm" variant="gradient" gradient={{ from: 'orange', to: 'red' }} compact mr='sm'>File</Button>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item onClick={onClickNewFlow}> New Flow </Menu.Item>
+            <Menu.Item onClick={onClickExamples}> Example Flows </Menu.Item>
+          <Menu.Divider />
+            <Menu.Item onClick={exportFlow}> Export </Menu.Item>
+            <Menu.Item onClick={importFlowFromFile}> Import </Menu.Item>
+          <Menu.Divider />
+            <Menu.Item onClick={onClickSettings}> Settings </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
         <Menu transitionProps={{ transition: 'pop-top-left' }}
           position="top-start"
           width={220}
           closeOnClickOutside={true}
         >
           <Menu.Target>
-            <Button size="sm" variant="gradient" compact mr='sm'>Add Node +</Button>
+            <Button size="sm" variant="white" c="orange" compact mr='sm'>Add Node +</Button>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item onClick={() => addTextFieldsNode('input')} icon={<IconTextPlus size="16px" />}> TextFields (In) </Menu.Item>
             <Menu.Item onClick={() => addTextFieldsNode('output')} icon={<IconTextPlus size="16px" />}> TextFields (Out)</Menu.Item>
             <Menu.Item onClick={() => addImageNode('input')} icon={<IconPhoto size="16px" />}> Image (In) </Menu.Item>
             <Menu.Item onClick={() => addImageNode('output')} icon={<IconPhoto size="16px" />}> Image (Out) </Menu.Item>
-            <Menu.Item onClick={addPromptNode} icon={'💬'}> Prompt Node </Menu.Item>
+            {/* <Menu.Item onClick={addPromptNode} icon={'💬'}> Prompt Node </Menu.Item> */}
             <Menu.Item onClick={addToolNode} icon={<IconTools size="16px" />}> Tool Node</Menu.Item>
             {/* <Menu.Item onClick={addModelToolNode} icon={<IconTools size="16px" />}> Tool Node (Model) </Menu.Item>
               <Menu.Item onClick={() => addCodeToolNode('python')} icon={<IconTools size="16px" />}> Tool Node (Code) </Menu.Item> */}
-            <Menu.Item onClick={() => addEvalNode('javascript')} icon={<IconTerminal size="16px" />}> JavaScript Evaluator Node </Menu.Item>
+            {/* <Menu.Item onClick={() => addEvalNode('javascript')} icon={<IconTerminal size="16px" />}> JavaScript Evaluator Node </Menu.Item>
             {IS_RUNNING_LOCALLY ? (
               <Menu.Item onClick={() => addEvalNode('python')} icon={<IconTerminal size="16px" />}> Python Evaluator Node </Menu.Item>
-            ) : <></>}
-            <Menu.Item onClick={addVisNode} icon={'📊'}> Vis Node </Menu.Item>
-            <Menu.Item onClick={addInspectNode} icon={'🔍'}> Inspect Node </Menu.Item>
-            <Menu.Item onClick={addCsvNode} icon={<IconCsv size="16px" />}> CSV Node </Menu.Item>
-            <Menu.Item onClick={addTabularDataNode} icon={'🗂️'}> Tabular Data Node </Menu.Item>
-            <Menu.Item onClick={addCommentNode} icon={'✏️'}> Comment Node </Menu.Item>
+            ) : <></>} */}
+            {/* <Menu.Item onClick={addVisNode} icon={'📊'}> Vis Node </Menu.Item> */}
+            {/* <Menu.Item onClick={addInspectNode} icon={'🔍'}> Inspect Node </Menu.Item> */}
+            {/* <Menu.Item onClick={addCsvNode} icon={<IconCsv size="16px" />}> CSV Node </Menu.Item> */}
+            {/* <Menu.Item onClick={addTabularDataNode} icon={'🗂️'}> Tabular Data Node </Menu.Item> */}
+            {/* <Menu.Item onClick={addCommentNode} icon={'✏️'}> Comment Node </Menu.Item>
             {IS_RUNNING_LOCALLY ? (
               <Menu.Item onClick={addScriptNode} icon={<IconSettingsAutomation size="16px" />}> Global Python Scripts </Menu.Item>
-            ) : <></>}
+            ) : <></>} */}
           </Menu.Dropdown>
         </Menu>
-        <Button onClick={exportFlow} size="sm" variant="outline" compact mr='xs'>Export</Button>
-        <Button onClick={importFlowFromFile} size="sm" variant="outline" compact>Import</Button>
+       
+        
+      </div>
+      <div style={{ position: 'fixed', left: 'calc(50% - 72px)', top: '10px', zIndex: 8 }}>
+        <img src={bouquetlogo1} alt="Logo" style={{ display: "inline-block", height: '1.3rem'}}/>
+        <Space w="xs"  style={{ display: "inline-block" }} />
+        <Text
+          fw={700}
+          style={{ display: "inline-block", fontSize: '1.5rem'}}
+        >
+          bouquet
+        </Text>
+        <Text
+          fw={700}
+          style={{ display: "inline-block", fontSize: '1.5rem'}}
+        >
+          .
+        </Text>
+      </div>
+      <div style={{ position: 'fixed', right: '10px', top: '10px', zIndex: 8 }}>
+      <Drawer opened={opened} onClose={close} position="right">
+          {content}
+        </Drawer>
+        <Button onClick={open} size="sm" variant="gradient" gradient={{ from: 'orange', to: 'red' }} mr='xs' leftIcon={<IconTools size="1rem" />}>Tool Store</Button>
       </div>
       <div style={{ position: 'fixed', right: '10px', top: '10px', zIndex: 8 }}>
         {IS_RUNNING_LOCALLY ? (<></>) : (
@@ -761,13 +925,10 @@ const App = () => {
             {clipboard.copied ? 'Link copied!' : (waitingForShare ? 'Sharing...' : 'Share')}
           </Button>
         )}
-        <Button onClick={onClickNewFlow} size="sm" variant="outline" compact mr='xs' style={{ float: 'left' }}> New Flow </Button>
-        <Button onClick={onClickExamples} size="sm" variant="filled" compact mr='xs' style={{ float: 'left' }}> Example Flows </Button>
-        <Button onClick={onClickSettings} size="sm" variant="gradient" compact><IconSettings size={"90%"} /></Button>
       </div>
-      <div style={{ position: 'fixed', right: '10px', bottom: '20px', zIndex: 8 }}>
+      {/* <div style={{ position: 'fixed', right: '10px', bottom: '20px', zIndex: 8 }}>
         <a href='https://forms.gle/AA82Rbn1X8zztcbj8' target="_blank" style={{ color: '#666', fontSize: '11pt' }}>Send us feedback</a>
-      </div>
+      </div> */}
     </div>
   );
 };

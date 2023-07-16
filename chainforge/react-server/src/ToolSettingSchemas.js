@@ -49,3 +49,47 @@ export let ToolType2IOType = {
   "Image-to-text": { input_type: "image", output_type: "text" },
   "Image-to-image": { input_type: "image", output_type: "image" },
 }
+
+export let ModelHubs = [
+  "HuggingFace",
+]
+
+export let InputLanguages = [
+  "English",
+  "Chinese",
+  "Japanese",
+  "Korean",
+  "French",
+  "German",
+  "Spanish",
+  "Italian",
+  "Portuguese",
+  "Russian",
+  "Arabic",
+  "Dutch",
+  "Polish",
+  "Swedish",
+  "Turkish",
+  "Persian",
+  "Hindi",
+]
+
+export let OutputLanguages = [
+  "English",
+  "Chinese",
+  "Japanese",
+  "Korean",
+  "French",
+  "German",
+  "Spanish",
+  "Italian",
+  "Portuguese",
+  "Russian",
+  "Arabic",
+  "Dutch",
+  "Polish",
+  "Swedish",
+  "Turkish",
+  "Persian",
+  "Hindi",
+]
