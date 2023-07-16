@@ -36,6 +36,9 @@ import LZString from 'lz-string';
 import { EXAMPLEFLOW_1 } from './example_flows';
 import './text-fields-node.css';
 
+import bouquetlogo from './bouquet.png';
+import bouquetlogo1 from './bouquet_1.png';
+
 // State management (from https://reactflow.dev/docs/guides/state-management/)
 import { shallow } from 'zustand/shallow';
 import useStore from './store';
@@ -842,13 +845,31 @@ const App = () => {
         </ReactFlow>
       </div>
       <div id="custom-controls" style={{ position: 'fixed', left: '10px', top: '10px', zIndex: 8 }}>
+      <Menu transitionProps={{ transition: 'pop-top-left' }}
+          position="top-start"
+          width={220}
+          closeOnClickOutside={true}
+        >
+          <Menu.Target>
+            <Button size="sm" variant="gradient" compact mr='sm'>File</Button>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item onClick={onClickNewFlow}> New Flow </Menu.Item>
+            <Menu.Item onClick={onClickExamples}> Example Flows </Menu.Item>
+          <Menu.Divider />
+            <Menu.Item onClick={exportFlow}> Export </Menu.Item>
+            <Menu.Item onClick={importFlowFromFile}> Import </Menu.Item>
+          <Menu.Divider />
+            <Menu.Item onClick={onClickSettings}> Settings </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
         <Menu transitionProps={{ transition: 'pop-top-left' }}
           position="top-start"
           width={220}
           closeOnClickOutside={true}
         >
           <Menu.Target>
-            <Button size="sm" variant="gradient" compact mr='sm'>Add Node +</Button>
+            <Button size="sm" variant="outline" compact mr='sm'>Add Node +</Button>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item onClick={() => addTextFieldsNode('input')} icon={<IconTextPlus size="16px" />}> TextFields (In) </Menu.Item>
@@ -873,11 +894,20 @@ const App = () => {
             ) : <></>} */}
           </Menu.Dropdown>
         </Menu>
-        <Button onClick={exportFlow} size="sm" variant="outline" compact mr='xs'>Export</Button>
-        <Button onClick={importFlowFromFile} size="sm" variant="outline" compact mr='xs'>Import</Button>
+       
         
       </div>
-      <div style={{ position: 'fixed', left: 'calc(50% - 62px)', top: '10px', zIndex: 8 }}>
+      <div style={{ position: 'fixed', left: 'calc(50% - 72px)', top: '10px', zIndex: 8 }}>
+        <img src={bouquetlogo1} alt="Logo" style={{ display: "inline-block", height: '1.3rem'}}/>
+        <Space w="xs"  style={{ display: "inline-block" }} />
+        <Text
+          fw={700}
+          style={{ display: "inline-block", fontSize: '1.5rem'}}
+        >
+          bouquet.
+        </Text>
+      </div>
+      <div style={{ position: 'fixed', right: '10px', top: '10px', zIndex: 8 }}>
       <Drawer opened={opened} onClose={close} position="right">
           {content}
         </Drawer>
@@ -893,13 +923,10 @@ const App = () => {
             {clipboard.copied ? 'Link copied!' : (waitingForShare ? 'Sharing...' : 'Share')}
           </Button>
         )}
-        <Button onClick={onClickNewFlow} size="sm" variant="outline" compact mr='xs' style={{ float: 'left' }}> New Flow </Button>
-        <Button onClick={onClickExamples} size="sm" variant="filled" compact mr='xs' style={{ float: 'left' }}> Example Flows </Button>
-        <Button onClick={onClickSettings} size="sm" variant="gradient" compact><IconSettings size={"90%"} /></Button>
       </div>
-      <div style={{ position: 'fixed', right: '10px', bottom: '20px', zIndex: 8 }}>
+      {/* <div style={{ position: 'fixed', right: '10px', bottom: '20px', zIndex: 8 }}>
         <a href='https://forms.gle/AA82Rbn1X8zztcbj8' target="_blank" style={{ color: '#666', fontSize: '11pt' }}>Send us feedback</a>
-      </div>
+      </div> */}
     </div>
   );
 };
