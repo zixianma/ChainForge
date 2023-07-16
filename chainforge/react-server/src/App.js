@@ -8,7 +8,7 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import { Button, Menu, LoadingOverlay, Text, Box, List, Loader, Drawer, Space, Flex} from '@mantine/core';
 import { useClipboard, useDisclosure } from '@mantine/hooks';
-import { IconSettings, IconTextPlus, IconTerminal, IconCsv, IconSettingsAutomation, IconFileSymlink, IconTools, IconPhoto, IconLanguage, IconWriting, IconRegex, IconLogin, IconBrush, IconPictureInPictureOn, IconTextCaption} from '@tabler/icons-react';
+import { IconSettings, IconTextPlus, IconTerminal, IconCsv, IconSettingsAutomation, IconFileSymlink, IconTools, IconPhoto, IconLanguage, IconWriting, IconRegex, IconLogin, IconBrush, IconPictureInPictureOn, IconTextCaption, IconBrandPython, IconBrandJavascript, IconCalculator, IconWorldWww, IconBrandGoogleMaps} from '@tabler/icons-react';
 import TextFieldsNode from './TextFieldsNode'; // Import a custom node
 import PromptNode from './PromptNode';
 // import ModelToolNode from './ModelToolNode'
@@ -732,6 +732,19 @@ const App = () => {
         <Button onClick={addTextGenerationNode} icon={<IconTextPlus size="16px" />} variant="light" compact><IconPictureInPictureOn size="16px" /><Space w="xs" />Convert Image</Button>
       </Flex>
 
+      <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Code Compilers</Text>
+      <Flex
+        mih={35}
+        gap="xs"
+        justify="flex-start"
+        align="center"
+        direction="row"
+        wrap="wrap"
+      >
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconBrandPython size="16px" /><Space w="xs" />Python</Button>
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconBrandJavascript size="16px" /><Space w="xs" />Javascript</Button>
+      </Flex>
+
       <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Processors</Text>
       <Flex
         mih={35}
@@ -744,6 +757,35 @@ const App = () => {
         <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconRegex size="16px" /><Space w="xs" />Regex</Button>
         <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconLogin size="16px" /><Space w="xs" />Mask</Button>
       </Flex>
+
+      <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Tools</Text>
+      <Flex
+        mih={35}
+        gap="xs"
+        justify="flex-start"
+        align="center"
+        direction="row"
+        wrap="wrap"
+      >
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconCalculator size="16px" /><Space w="xs" />Calculator</Button>
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconWorldWww size="16px" /><Space w="xs" />Search</Button>
+
+      </Flex>
+
+      <Text mt="lg" mb="xs" size={'9pt'} tt="uppercase" fw={700} c="dimmed">Specific APIs</Text>
+      <Flex
+        mih={35}
+        gap="xs"
+        justify="flex-start"
+        align="center"
+        direction="row"
+        wrap="wrap"
+      >
+        <Button icon={<IconTextPlus size="16px" />} variant="light" compact><IconBrandGoogleMaps size="16px" /><Space w="xs" />Google Maps</Button>
+
+      </Flex>
+
+
       
     </Box>
   );
@@ -800,10 +842,6 @@ const App = () => {
         </ReactFlow>
       </div>
       <div id="custom-controls" style={{ position: 'fixed', left: '10px', top: '10px', zIndex: 8 }}>
-        <Drawer opened={opened} onClose={close} position="right">
-          {content}
-        </Drawer>
-        <Button onClick={open} size="sm" variant="gradient" gradient={{ from: 'orange', to: 'red' }} mr='xs' leftIcon={<IconTools size="1rem" />}>Tool Store</Button>
         <Menu transitionProps={{ transition: 'pop-top-left' }}
           position="top-start"
           width={220}
@@ -838,6 +876,12 @@ const App = () => {
         <Button onClick={exportFlow} size="sm" variant="outline" compact mr='xs'>Export</Button>
         <Button onClick={importFlowFromFile} size="sm" variant="outline" compact mr='xs'>Import</Button>
         
+      </div>
+      <div style={{ position: 'fixed', left: 'calc(50% - 62px)', top: '10px', zIndex: 8 }}>
+      <Drawer opened={opened} onClose={close} position="right">
+          {content}
+        </Drawer>
+        <Button onClick={open} size="sm" variant="gradient" gradient={{ from: 'orange', to: 'red' }} mr='xs' leftIcon={<IconTools size="1rem" />}>Tool Store</Button>
       </div>
       <div style={{ position: 'fixed', right: '10px', top: '10px', zIndex: 8 }}>
         {IS_RUNNING_LOCALLY ? (<></>) : (

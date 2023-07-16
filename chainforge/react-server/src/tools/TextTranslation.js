@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { IconTools, IconList, IconLanguage } from '@tabler/icons-react';
-import { NativeSelect, Select, Popover, Text, Tooltip, Center, Grid} from '@mantine/core';
+import { NativeSelect, Select, Popover, Text, Tooltip, Center, Grid, Space} from '@mantine/core';
 import NodeLabel from '../NodeLabelComponent';
 import { HfInference } from '@huggingface/inference';
 import TemplateHooks, { extractBracketedSubstrings } from '../TemplateHooksComponent'
@@ -313,12 +313,15 @@ const TextTranslation = ({ data, id }) => {
         label="Select tool type:"
         onChange={handleToolTypeInputChange}
       /> */}
+
+      <div style={{ backgroundColor: "#f5f5f5", padding: "10px", borderRadius: "5px" }}>
       <Grid>
         <Grid.Col span={6}>
         <NativeSelect
           id={"input-language"}
           label="Input Language:"
           data={InputLanguages}
+          size="xs"
           // onChange={handleModelInputChange}
         />
         </Grid.Col>
@@ -327,6 +330,7 @@ const TextTranslation = ({ data, id }) => {
           id={"output-language"}
           label="Output Language:"
           data={OutputLanguages}
+          size="xs"
           // onChange={handleModelOutputChange}
         />
         </Grid.Col>
@@ -336,8 +340,12 @@ const TextTranslation = ({ data, id }) => {
           id={"model-hub"}
           label="Model Hub:"
           data={ModelHubs}
+          size="xs"
           // onChange={handleModelOutputChange}
         />
+      </div>
+
+      <Space h="xs" />
       
       
       <NativeSelect
