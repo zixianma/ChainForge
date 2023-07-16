@@ -847,7 +847,7 @@ const App = () => {
           closeOnClickOutside={true}
         >
           <Menu.Target>
-            <Button size="sm" variant="gradient" compact mr='sm'>File</Button>
+            <Button size="sm" variant="gradient" gradient={{ from: 'orange', to: 'red' }} compact mr='sm'>File</Button>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item onClick={onClickNewFlow}> New Flow </Menu.Item>
@@ -865,7 +865,7 @@ const App = () => {
           closeOnClickOutside={true}
         >
           <Menu.Target>
-            <Button size="sm" variant="outline" compact mr='sm'>Add Node +</Button>
+            <Button size="sm" variant="white" c="orange" compact mr='sm'>Add Node +</Button>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item onClick={() => addTextFieldsNode('input')} icon={<IconTextPlus size="16px" />}> TextFields (In) </Menu.Item>
@@ -900,7 +900,13 @@ const App = () => {
           fw={700}
           style={{ display: "inline-block", fontSize: '1.5rem'}}
         >
-          bouquet.
+          bouquet
+        </Text>
+        <Text
+          fw={700}
+          style={{ display: "inline-block", fontSize: '1.5rem'}}
+        >
+          .
         </Text>
       </div>
       <div style={{ position: 'fixed', right: '10px', top: '10px', zIndex: 8 }}>
